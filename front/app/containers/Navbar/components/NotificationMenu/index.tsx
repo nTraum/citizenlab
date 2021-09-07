@@ -25,6 +25,8 @@ import GetAuthUser, { GetAuthUserChildProps } from 'resources/GetAuthUser';
 // illustrations
 import EmptyStateImg from './assets/no_notification_image.svg';
 
+import consumer from 'services/actionCable/consumer';
+
 const Container = styled.div`
   position: relative;
 `;
@@ -78,6 +80,8 @@ interface Props extends InputProps, DataProps {}
 
 interface State {
   dropdownOpened: boolean;
+  unreadCount: number;
+  notifications: GetNotificationsChildProps;
 }
 
 export class NotificationMenu extends React.PureComponent<Props, State> {
@@ -85,7 +89,20 @@ export class NotificationMenu extends React.PureComponent<Props, State> {
     super(props);
     this.state = {
       dropdownOpened: false,
+      unreadCount: props?.authUser?.attributes?.unread_notifications || 0,
     };
+  }
+
+  componentDidMount() {
+    consumer.subscriptions.create(
+      { channel: 'comment_on_your_comment' },
+      {
+        received(data) {
+          console.log(data);
+          this.setState(({ unreadCount }) => unreadCount++);
+        },
+      }
+    );
   }
 
   toggleDropdown = (event: React.FormEvent<any>) => {
@@ -111,7 +128,7 @@ export class NotificationMenu extends React.PureComponent<Props, State> {
       return (
         <Container>
           <NotificationCount
-            count={authUser.attributes.unread_notifications}
+            count={this.state.unreadCount}
             onClick={this.toggleDropdown}
             dropdownOpened={dropdownOpened}
           />
