@@ -24,7 +24,8 @@ services:
     ports:
       - "4000:4000"
     volumes:
-      - "./back:/cl2_back"
+      - "cl2_back:/cl2_back"
+      - "/cl2_back/public/uploads"
     env_file:
       - ".env-back"
     tty: true
@@ -41,7 +42,8 @@ services:
       dockerfile: back/Dockerfile
     command: bundle exec que
     volumes:
-      - "./back:/cl2_back"
+      - "cl2_back:/cl2_back"
+      - "/cl2_back/public/uploads"
     env_file:
       - ".env-back"
     tty: true
@@ -69,7 +71,17 @@ services:
 
 volumes:
   postgres:
+  cl2_back:
 
 networks:
   default:
     name: citizenlab
+
+x-mutagen:
+  sync:
+    defaults:
+      ignore:
+        vcs: true
+    code:
+      alpha: "./back/."
+      beta: "volume://cl2_back"
