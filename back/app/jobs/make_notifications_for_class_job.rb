@@ -10,6 +10,9 @@ class MakeNotificationsForClassJob < ApplicationJob
       begin
         notification.save!
         LogActivityJob.set(wait: 10.seconds).perform_later(notification, 'created', notification.recipient, notification.created_at.to_i)
+        if notification.type == 'Notifications::CommentOnYourComment'
+          ActionCable.server.broadcast('comment_on_your_comment', { body: 'Someone commented on your comment' })
+        end
       rescue ActiveRecord::RecordInvalid => exception
         Raven.capture_exception(exception)
       end
