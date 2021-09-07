@@ -26,6 +26,7 @@ services:
     volumes:
       - "cl2_back:/cl2_back"
       - "/cl2_back/public/uploads"
+      - "/cl2_back/tmp"
     env_file:
       - ".env-back"
     tty: true
@@ -44,6 +45,7 @@ services:
     volumes:
       - "cl2_back:/cl2_back"
       - "/cl2_back/public/uploads"
+      - "/cl2_back/tmp"
     env_file:
       - ".env-back"
     tty: true
