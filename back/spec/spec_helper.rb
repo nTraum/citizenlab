@@ -148,15 +148,12 @@ RSpec.configure do |config|
     end
   end
 
-  config.before(:each) do
+  config.before(:context) do
     Apartment::Tenant.switch!('example_org') if CitizenLab.ee? # Switch into the default tenant
   end
 
-  config.after(:each) do
-    # Reset tenant back to `public`
-    Apartment::Tenant.reset if CitizenLab.ee?
-  rescue ActiveRecord::StatementInvalid
-    # Ignore
+  config.before(:each) do
+    Apartment::Tenant.switch!('example_org') if CitizenLab.ee? # Switch into the default tenant
   end
 
   config.before(:suite) do
