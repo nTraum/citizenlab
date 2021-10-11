@@ -202,6 +202,8 @@ function init {
 function get_builds {
   echo "Getting workflow status:"
   get_workflows "$(jq '.pages // 1' "${CONFIG_FILE}")"
+  ls -l "${TMP_DIR}/"
+  cat ${TMP_DIR}/*.json
   wait
 
   cat "${TMP_DIR}"/data.*.json | jq --slurp 'reduce inputs as $i (.; . += $i) | flatten' > "${DATA_FILE}"
