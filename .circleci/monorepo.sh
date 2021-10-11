@@ -197,6 +197,7 @@ function get_builds {
   cat "${TMP_DIR}"/data.*.json | jq --slurp 'reduce inputs as $i (.; . += $i) | flatten' > "${DATA_FILE}"
   map < "${DATA_FILE}" > "${BUILDS_FILE}"
   echo "Created build-commit map ${BUILDS_FILE}"
+  cat ${BUILDS_FILE}
 }
 
 function debug {
@@ -228,6 +229,11 @@ function main {
   init
   get_builds
   git_parent_commit=$( get_parent )
+  echo "${git_parent_commit}"
+
+  echo "Debug 1"
+  cat ${CONFIG_FILE}
+  cat ${BUILDS_FILE}
 
   statuses=$(\
     read_config_packages "${CONFIG_FILE}" | 
