@@ -28,6 +28,16 @@ function read_config_packages {
 
 # Download workflows status from CircleCI API (as JSON files).
 function get_workflows {
+  echo $1
+
+  seq 0 100 $((($1 - 1) * 100)) | \
+  awk \
+    -v api="https://circleci.com/api/v1.1/project/${PROJECT_SLUG}" \
+    -v tree="/tree/${CIRCLE_BRANCH}" \
+    -v token="${CIRCLE_USER_TOKEN}" \
+    -v dir="${TMP_DIR}/data." \
+    '{ print $1 " " token " " api tree "?shallow=true&limit=100&offset=" $1 " " dir sprintf("%04d", $1) ".json" }'
+
   seq 0 100 $((($1 - 1) * 100)) | \
   awk \
     -v api="https://circleci.com/api/v1.1/project/${PROJECT_SLUG}" \
