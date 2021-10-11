@@ -233,6 +233,7 @@ function main {
 
   echo "Debug 1"
   cat ${CONFIG_FILE}
+  echo
   cat ${BUILDS_FILE}
 
   statuses=$(\
