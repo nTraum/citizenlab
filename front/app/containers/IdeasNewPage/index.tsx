@@ -345,12 +345,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
         <Container id="e2e-idea-new-page">
           <IdeasNewMeta />
           <PageContainer className="ideaForm">
-            <NewIdeaForm
-              onSubmit={this.handleOnIdeaSubmit}
-              projectId={project.id}
-              onTitleChange={this.onTitleChange}
-              onDescriptionChange={this.onDescriptionChange}
-            />
+            <NewIdeaForm />
           </PageContainer>
           <ButtonBarContainer>
             <IdeasNewButtonBar

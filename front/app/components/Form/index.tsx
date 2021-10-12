@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import RJSForm, {
   FieldProps,
   IChangeEvent,
@@ -16,6 +16,7 @@ import { Box, Input, Select } from 'cl2-component-library';
 import UserSelect from 'components/UI/UserSelect';
 import { IOption } from 'typings';
 import MultipleSelect from 'components/UI/MultipleSelect';
+import { forOwn } from 'lodash-es';
 
 export type TTemplate = 'default' | 'SectionForm';
 
@@ -100,7 +101,7 @@ const CustomInput = (props: FieldProps) => {
     <Box flex="row">
       <Input
         type="text"
-        value={props.value}
+        value={props.formData}
         onChange={onChange}
         key={props.id}
         id={props.id}
@@ -112,13 +113,16 @@ const CustomInput = (props: FieldProps) => {
 const customFields = { StringField: CustomInput };
 
 export default ({ schema, uiSchema, onChange, onSubmit, onError }: Props) => {
+  const [formData, setFormData] = useState<Record<string, any> | null>();
+
   return (
     <RJSForm
       schema={schema}
       uiSchema={uiSchema}
-      onChange={onChange}
+      // onChange={handleChange}
       onSubmit={onSubmit}
       onError={onError}
+      // liveValidate={false}
       widgets={widgets}
       fields={customFields}
       transformErrors={(e) => {
