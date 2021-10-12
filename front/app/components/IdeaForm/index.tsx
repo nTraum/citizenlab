@@ -78,7 +78,7 @@ const Form = styled.form`
   align-items: center;
 `;
 
-const StyledFormSection = styled(FormSection)`
+export const IdeaformSection = styled(FormSection)`
   max-width: 100%;
 
   ${media.smallerThanMinTablet`
@@ -729,7 +729,7 @@ class IdeaForm extends PureComponent<
 
       return (
         <Form id="idea-form" className={className}>
-          <StyledFormSection>
+          <IdeaformSection>
             <FormSectionTitle
               message={getInputTermMessage(inputTerm, {
                 idea: messages.formGeneralSectionTitle,
@@ -839,10 +839,10 @@ class IdeaForm extends PureComponent<
                 />
               )}
             </FormElement>
-          </StyledFormSection>
+          </IdeaformSection>
 
           {(showPBBudget || showTopics || showLocation) && (
-            <StyledFormSection>
+            <IdeaformSection>
               <FormSectionTitle message={messages.formDetailsSectionTitle} />
               {showPBBudget && (
                 <HasPermission
@@ -965,10 +965,10 @@ class IdeaForm extends PureComponent<
                   {locationError && <Error text={locationError} />}
                 </FormElement>
               )}
-            </StyledFormSection>
+            </IdeaformSection>
           )}
 
-          <StyledFormSection>
+          <IdeaformSection>
             <FormSectionTitle message={messages.fileAttachmentsTitle} />
             <FormElement id="e2e-idea-image-upload">
               <FormLabel
@@ -1025,7 +1025,7 @@ class IdeaForm extends PureComponent<
                 {attachmentsError && <Error text={attachmentsError} />}
               </FormElement>
             )}
-          </StyledFormSection>
+          </IdeaformSection>
         </Form>
       );
     }
