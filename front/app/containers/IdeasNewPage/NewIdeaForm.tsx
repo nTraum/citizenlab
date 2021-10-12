@@ -24,6 +24,20 @@ const Container = styled.div`
   `}
 `;
 
+const PageContainer = styled.main`
+  width: 100%;
+  min-height: calc(
+    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
+  );
+  position: relative;
+
+  ${media.smallerThanMaxTablet`
+    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
+    props
+  ) => props.theme.mobileTopBarHeight}px);
+  `}
+`;
+
 const schema = {
   type: 'object' as JSONSchema6TypeName,
   title: 'Add New Idea',
@@ -91,14 +105,16 @@ const uiSchema = {
 
 export default () => {
   return (
-    <Container id="e2e-new-idea-form">
-      <Form
-        schema={schema}
-        uiSchema={uiSchema}
-        onChange={(e) => console.log('onChange', e)}
-        onSubmit={(e) => console.log('onSubmit', e)}
-        onError={(e) => console.log('onError', e)}
-      />
-    </Container>
+    <PageContainer>
+      <Container id="e2e-new-idea-form">
+        <Form
+          schema={schema}
+          uiSchema={uiSchema}
+          // onChange={(e) => console.log('Parent:onChange', e)}
+          // onSubmit={(e) => console.log('Parent:onSubmit', e)}
+          // onError={(e) => console.log('Parent:onError', e)}
+        />
+      </Container>
+    </PageContainer>
   );
 };

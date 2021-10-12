@@ -9,7 +9,6 @@ import { withRouter, WithRouterProps } from 'react-router';
 import clHistory from 'utils/cl-router/history';
 
 // components
-import IdeasNewButtonBar from './IdeasNewButtonBar';
 import NewIdeaForm from './NewIdeaForm';
 import IdeasNewMeta from './IdeasNewMeta';
 
@@ -49,20 +48,6 @@ const Container = styled.div`
   min-height: calc(
     100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
   );
-
-  ${media.smallerThanMaxTablet`
-    min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
-    props
-  ) => props.theme.mobileTopBarHeight}px);
-  `}
-`;
-
-const PageContainer = styled.main`
-  width: 100%;
-  min-height: calc(
-    100vh - ${(props) => props.theme.menuHeight + props.theme.footerHeight}px
-  );
-  position: relative;
 
   ${media.smallerThanMaxTablet`
     min-height: calc(100vh - ${(props) => props.theme.mobileMenuHeight}px - ${(
@@ -344,15 +329,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       return (
         <Container id="e2e-idea-new-page">
           <IdeasNewMeta />
-          <PageContainer className="ideaForm">
-            <NewIdeaForm />
-          </PageContainer>
-          <ButtonBarContainer>
-            <IdeasNewButtonBar
-              form="idea-form"
-              onSubmit={this.handleOnIdeaSubmit}
-            />
-          </ButtonBarContainer>
+          <NewIdeaForm />
         </Container>
       );
     }

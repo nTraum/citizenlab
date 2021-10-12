@@ -6,12 +6,23 @@ import {
   FieldTemplateProps,
   ObjectFieldTemplateProps,
 } from 'react-jsonschema-form';
-import Error from 'components/UI/Error';
+import Error from './Error';
 import { IdeaformSection } from 'components/IdeaForm';
 
 export const FieldTemplate = (props: FieldTemplateProps) => {
-  const { id, label, description, rawErrors, children, required } = props;
+  const {
+    id,
+    label,
+    description,
+    rawErrors,
+    children,
+    required,
+    schema,
+  } = props;
   const errors: any = uniq(rawErrors);
+  errors.length > 0 && console.log(props);
+
+  const { minLength, maxLength } = schema;
 
   if (props.hidden !== true) {
     const descriptionJSX = description?.props?.description?.length > 0 && (
@@ -30,7 +41,17 @@ export const FieldTemplate = (props: FieldTemplateProps) => {
         {errors &&
           errors.length > 0 &&
           errors.map((value, index) => {
-            return <Error key={index} marginTop="10px" text={value} />;
+            console.log(value);
+            return (
+              <Error
+                key={index}
+                errorContent={{
+                  key: value,
+                  fieldName: label.toLowerCase(),
+                  values: { minLength, maxLength },
+                }}
+              />
+            );
           })}
       </Box>
     );

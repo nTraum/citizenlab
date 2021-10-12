@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import RJSForm, {
+  AjvError,
   FieldProps,
   IChangeEvent,
   ISubmitEvent,
@@ -15,8 +16,9 @@ import { ITopicData } from 'services/topics';
 import { Box, Input, Select } from 'cl2-component-library';
 import UserSelect from 'components/UI/UserSelect';
 import { IOption } from 'typings';
-import MultipleSelect from 'components/UI/MultipleSelect';
-import { forOwn } from 'lodash-es';
+import SubmitBar from './SubmitBar';
+import { injectIntl } from 'utils/cl-intl';
+import { InjectedIntlProps } from 'react-intl';
 
 export type TTemplate = 'default' | 'SectionForm';
 
@@ -112,25 +114,59 @@ const CustomInput = (props: FieldProps) => {
 };
 const customFields = { StringField: CustomInput };
 
-export default ({ schema, uiSchema, onChange, onSubmit, onError }: Props) => {
+const transformErrorsToBe = (intl) => (errors: AjvError[]) => {
+  console.log(errors);
+  const errorn = errors.map((error: AjvError) => {
+    if (error.name === 'required' || error.name === 'minLength')
+      return { ...error, message: error.name };
+    return error;
+  });
+  console.log(errorn);
+  return errorn;
+};
+
+const Form = ({
+  schema,
+  uiSchema,
+  onChange,
+  onError,
+  onSubmit,
+  intl,
+}: Props & InjectedIntlProps) => {
+  const [loading, setLoading] = useState(false);
+  // const [hasErrors, setHasErrors] = useState(false);
   const [formData, setFormData] = useState<Record<string, any> | null>();
+
+  const handleSubmit = (submitEvent) => {
+    setFormData(submitEvent.formData);
+    setLoading(true);
+    onSubmit(submitEvent);
+  };
+  const transformErrors = transformErrorsToBe(intl);
 
   return (
     <RJSForm
       schema={schema}
       uiSchema={uiSchema}
-      // onChange={handleChange}
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit}
       onError={onError}
-      // liveValidate={false}
+      onChange={onChange}
       widgets={widgets}
+      formData={formData}
       fields={customFields}
-      transformErrors={(e) => {
-        console.log('transformErrors', e);
-        return e;
-      }}
+      transformErrors={transformErrors}
       FieldTemplate={FieldTemplate}
       ObjectFieldTemplate={ObjectFieldTemplate}
-    />
+      showErrorList={false}
+      liveValidate={false}
+    >
+      <SubmitBar
+        submitText="Submit ME"
+        // hasErrors={hasErrors}
+        loading={loading}
+      />
+    </RJSForm>
   );
 };
+
+export default injectIntl(Form);
