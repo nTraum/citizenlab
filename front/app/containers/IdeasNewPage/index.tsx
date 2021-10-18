@@ -329,7 +329,7 @@ class IdeasNewPage extends PureComponent<Props & WithRouterProps, State> {
       return (
         <Container id="e2e-idea-new-page">
           <IdeasNewMeta />
-          <NewIdeaForm />
+          <NewIdeaForm projectId={project.id} />
         </Container>
       );
     }

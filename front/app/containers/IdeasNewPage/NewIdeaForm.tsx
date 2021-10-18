@@ -1,9 +1,11 @@
 import React from 'react';
-import Form, { TTemplate } from 'components/Form';
+import Form, { TFormData, TTemplate } from 'components/Form';
 
 import { JSONSchema6TypeName } from 'json-schema';
 import styled from 'styled-components';
 import { media } from 'utils/styleUtils';
+import { ISubmitEvent } from 'react-jsonschema-form';
+import { addIdea, IIdeaAdd } from 'services/ideas';
 
 const Container = styled.div`
   width: 100%;
@@ -83,13 +85,20 @@ const schema = {
       },
     },
   },
-  required: ['idea'],
 };
+
+// notes :
+// On multiloc fields (like title and description) there are several options :
+// - use a widget that populates the multiloc
+// - handle strings in submit to transform into multiloc
+// - send the strig as is with the locale and let back-end localize
+// -> prefer one as some fields could be shown as multiloc with or without locale switcher
+// -> last one is interresting as it could verify the language match
 
 const uiSchema = {
   Template: 'SectionForm' as TTemplate,
   idea: {
-    author: {
+    author_id: {
       'ui:widget': 'UserSelect',
     },
   },
@@ -103,7 +112,34 @@ const uiSchema = {
   // }
 };
 
-export default () => {
+export default ({ projectId }) => {
+  const onSubmit = async ({ formData }: ISubmitEvent<TFormData>) => {
+    console.log(formData);
+    // now I'm making no change to BE so I'll flaten the data to pass it back in the expected format
+    // should switch that to BE at term ?
+    const ideaObject: IIdeaAdd = {
+      author_id: formData.idea.author_id,
+      publication_status: 'published',
+      title_multiloc: { en: formData.idea.title_multiloc },
+      body_multiloc: { en: formData.idea.body_multiloc },
+      topic_ids: [],
+      project_id: projectId,
+      location_description: null,
+      location_point_geojson: null,
+      budget: null,
+      proposed_budget: null,
+    };
+    try {
+      const idea = await addIdea(ideaObject);
+    } catch (error) {
+      console.log(error?.json?.errors);
+    }
+  };
+
+  const onError = ({ e }) => {
+    console.log(e);
+  };
+
   return (
     <PageContainer>
       <Container id="e2e-new-idea-form">
@@ -111,8 +147,8 @@ export default () => {
           schema={schema}
           uiSchema={uiSchema}
           // onChange={(e) => console.log('Parent:onChange', e)}
-          // onSubmit={(e) => console.log('Parent:onSubmit', e)}
-          // onError={(e) => console.log('Parent:onError', e)}
+          onSubmit={onSubmit}
+          onError={onError}
         />
       </Container>
     </PageContainer>

@@ -1,7 +1,7 @@
 import { Box } from 'cl2-component-library';
 import { FormLabelValue } from 'components/UI/FormComponents';
 import { uniq } from 'lodash-es';
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import {
   FieldTemplateProps,
   ObjectFieldTemplateProps,
@@ -9,7 +9,7 @@ import {
 import Error from './Error';
 import { IdeaformSection } from 'components/IdeaForm';
 
-export const FieldTemplate = (props: FieldTemplateProps) => {
+export const FieldTemplate: FunctionComponent = (props: FieldTemplateProps) => {
   const {
     id,
     label,
@@ -20,9 +20,7 @@ export const FieldTemplate = (props: FieldTemplateProps) => {
     schema,
   } = props;
   const errors: any = uniq(rawErrors);
-  errors.length > 0 && console.log(props);
-
-  const { minLength, maxLength } = schema;
+  console.log(props);
 
   if (props.hidden !== true) {
     const descriptionJSX = description?.props?.description?.length > 0 && (
@@ -48,7 +46,7 @@ export const FieldTemplate = (props: FieldTemplateProps) => {
                 errorContent={{
                   key: value,
                   fieldName: label.toLowerCase(),
-                  values: { minLength, maxLength },
+                  values: schema,
                 }}
               />
             );
@@ -60,7 +58,9 @@ export const FieldTemplate = (props: FieldTemplateProps) => {
   return null;
 };
 
-export const ObjectFieldTemplate = (props: ObjectFieldTemplateProps) => {
+export const ObjectFieldTemplate: FunctionComponent<ObjectFieldTemplateProps> = (
+  props: ObjectFieldTemplateProps
+) => {
   const Container =
     props?.uiSchema?.Template === 'SectionForm' ? IdeaformSection : Box;
 

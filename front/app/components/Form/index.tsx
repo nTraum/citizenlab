@@ -6,8 +6,8 @@ import RJSForm, {
   ISubmitEvent,
   UiSchema,
   WidgetProps,
-} from 'react-jsonschema-form';
-import { JSONSchema6 } from 'json-schema';
+} from '@rjsf/core';
+import { JSONSchema7 } from 'json-schema';
 import { FieldTemplate, ObjectFieldTemplate } from './UITemplate';
 import TopicsPicker from 'components/UI/TopicsPicker';
 import useTopics from 'hooks/useTopics';
@@ -22,14 +22,15 @@ import { InjectedIntlProps } from 'react-intl';
 
 export type TTemplate = 'default' | 'SectionForm';
 
-interface Props {
-  schema: JSONSchema6;
-  uiSchema?: UiSchema;
-  onChange: (e: IChangeEvent<any>) => void;
-  onSubmit: (e: ISubmitEvent<any>) => void;
-  onError: (any) => any;
-}
+export type TFormData = Record<string, any>;
 
+interface Props {
+  schema: JSONSchema7;
+  uiSchema?: UiSchema;
+  onChange?: (e: IChangeEvent<any>) => void;
+  onSubmit: (e: ISubmitEvent<any>) => void;
+  onError?: (any) => any;
+}
 // this doesn't work
 const CustomSelect = (props: WidgetProps) => {
   console.log(props);
@@ -52,7 +53,7 @@ const CustomSelect = (props: WidgetProps) => {
     const selectedOption: IOption | null = props.value
       ? {
           value: props.value,
-          label: props.options.enumOptions.find(
+          label: props?.options?.enumOptions?.find(
             (enumOption) => enumOption.value === props.value
           ),
         }
@@ -135,7 +136,7 @@ const Form = ({
 }: Props & InjectedIntlProps) => {
   const [loading, setLoading] = useState(false);
   // const [hasErrors, setHasErrors] = useState(false);
-  const [formData, setFormData] = useState<Record<string, any> | null>();
+  const [formData, setFormData] = useState<TFormData | null>();
 
   const handleSubmit = (submitEvent) => {
     setFormData(submitEvent.formData);
@@ -144,6 +145,14 @@ const Form = ({
   };
   const transformErrors = transformErrorsToBe(intl);
 
+  const extraErrors = {
+    idea: {
+      title_multiloc: {
+        __errors: ['some error that got added as a prop'],
+      },
+    },
+  };
+  console.log(extraErrors);
   return (
     <RJSForm
       schema={schema}
@@ -159,6 +168,7 @@ const Form = ({
       ObjectFieldTemplate={ObjectFieldTemplate}
       showErrorList={false}
       liveValidate={false}
+      extraErrors={extraErrors}
     >
       <SubmitBar
         submitText="Submit ME"
