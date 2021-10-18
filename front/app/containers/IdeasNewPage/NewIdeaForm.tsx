@@ -42,13 +42,13 @@ const PageContainer = styled.main`
 
 const schema = {
   type: 'object' as JSONSchema6TypeName,
-  title: 'Add New Idea',
+  title_multiloc: 'Add New Idea',
   properties: {
     idea: {
       title: "What's your idea ?",
       type: 'object' as JSONSchema6TypeName,
       properties: {
-        title: {
+        title_multiloc: {
           type: 'string' as JSONSchema6TypeName,
           title: 'Title',
           minLength: 10,
@@ -58,13 +58,13 @@ const schema = {
           type: 'string' as JSONSchema6TypeName,
           title: 'Author',
         },
-        description: {
+        body_multiloc: {
           type: 'string' as JSONSchema6TypeName,
           title: 'Description',
           minLength: 30,
         },
       },
-      required: ['title', 'description', 'author'],
+      required: ['title_multiloc', 'body_multiloc', 'author'],
     },
     details: {
       title: 'Details',
@@ -88,7 +88,7 @@ const schema = {
 };
 
 // notes :
-// On multiloc fields (like title and description) there are several options :
+// On multiloc fields (like title_multiloc and description) there are several options :
 // - use a widget that populates the multiloc
 // - handle strings in submit to transform into multiloc
 // - send the strig as is with the locale and let back-end localize
