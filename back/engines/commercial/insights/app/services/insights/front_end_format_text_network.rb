@@ -8,10 +8,10 @@ module Insights
   # This class implements a representation for text networks that is convenient
   # to work with for the front-end.
   class FrontEndFormatTextNetwork
-    DEFAULT_KEYWORD_SIZE_RANGE = [1, 5].freeze
+    DEFAULT_KEYWORD_SIZE_RANGE = [2, 10].freeze
     DEFAULT_CLUSTER_SIZE_RANGE = [100, 500].freeze
-    MAX_NB_CLUSTERS = 10
-    MAX_NB_KW_PER_CLUSTER = 25 # max number of keyword by cluster
+    MAX_NB_CLUSTERS = 10 * 25
+    MAX_NB_KW_PER_CLUSTER = 10 * 25 # max number of keyword by cluster
 
     attr_reader :id
 
@@ -51,7 +51,7 @@ module Insights
       def nodes(
         network, keyword_size_range = DEFAULT_KEYWORD_SIZE_RANGE, cluster_size_range = DEFAULT_CLUSTER_SIZE_RANGE
       )
-        keyword_nodes(network, keyword_size_range) + cluster_nodes(network, cluster_size_range)
+        keyword_nodes(network, keyword_size_range)
       end
 
       # @param [NLP::TextNetwork] network
@@ -91,7 +91,7 @@ module Insights
               id: node.id,
               name: node.name,
               val: node.importance_score,
-              cluster_id: community.id,
+              cluster_id: nil,
               color_index: i
             }
           end
@@ -109,7 +109,7 @@ module Insights
       # @param [NLP::TextNetwork] network
       # @return [Array<{Symbol=>String}>]
       def links(network)
-        cluster_membership_links(network) + inter_cluster_links(network)
+        inter_cluster_links(network)
       end
 
       # @param [NLP::TextNetwork] network
@@ -123,17 +123,9 @@ module Insights
       # @param [NLP::TextNetwork] network
       # @return [Array<{Symbol=>String}>]
       def inter_cluster_links(network)
-        links_index = network.links.group_by do |link|
-          [link.from_id, link.to_id].sort
-        end
-
-        community_pairs = network.communities.combination(2).select do |c1, c2|
-          c1.children_ids.product(c2.children_ids).any? do |id_pair|
-            links_index[id_pair.sort]
-          end
-        end
-
-        community_pairs.map { |c1, c2| { source: c1.id, target: c2.id } }
+        network.links
+               .reject { |l| l.from_id == l.to_id }
+               .uniq { |l| [l.from_id, l.to_id].sort }.map(&:as_json)
       end
     end
   end
