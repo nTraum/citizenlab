@@ -8,10 +8,10 @@ module Insights
   # This class implements a representation for text networks that is convenient
   # to work with for the front-end.
   class FrontEndFormatTextNetwork
-    DEFAULT_KEYWORD_SIZE_RANGE = [2, 10].freeze
+    DEFAULT_KEYWORD_SIZE_RANGE = [3, 15].freeze
     DEFAULT_CLUSTER_SIZE_RANGE = [100, 500].freeze
-    MAX_NB_CLUSTERS = 10 * 25
-    MAX_NB_KW_PER_CLUSTER = 10 * 25 # max number of keyword by cluster
+    MAX_NB_CLUSTERS = 10
+    MAX_NB_KW_PER_CLUSTER = 10 # max number of keyword by cluster
 
     attr_reader :id
 
