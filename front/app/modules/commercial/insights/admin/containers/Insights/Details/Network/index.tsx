@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 
 // graph
-import { forceCollide } from 'd3-force';
+// import { forceCollide } from 'd3-force';
 import ForceGraph2D, {
   ForceGraphMethods,
   NodeObject,
@@ -16,13 +16,13 @@ import ForceGraph2D, {
 
 // hooks
 import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
-import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
+//import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
 
 // types
 import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insightsNetwork';
 
 // utils
-import { isNilOrError, isError } from 'utils/helperUtils';
+import { isNilOrError } from 'utils/helperUtils';
 import { cloneDeep } from 'lodash-es';
 import { colors } from 'utils/styleUtils';
 import clHistory from 'utils/cl-router/history';
@@ -38,20 +38,20 @@ import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
 // intl
-import { injectIntl, FormattedMessage } from 'utils/cl-intl';
+import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
-
+import { data } from './network';
 // styles
-import styled from 'styled-components';
+// import styled from 'styled-components';
 
 type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
 type Node = NodeObject & IInsightsNetworkNode;
 
 const zoomStep = 0.2;
-const chargeStrength = -25;
-const chargeDistanceMax = 80;
-const linkDistance = 50;
+// const chargeStrength = -25;
+// const chargeDistanceMax = 80;
+// const linkDistance = 50;
 const visibleKeywordLabelScale = 3.5;
 
 const nodeColors = [
@@ -67,9 +67,9 @@ const nodeColors = [
   '#934E6F',
 ];
 
-const StyledMessage = styled.h4`
-  text-align: center;
-`;
+// const StyledMessage = styled.h4`
+//   text-align: center;
+// `;
 
 const Network = ({
   params: { viewId },
@@ -83,21 +83,23 @@ const Network = ({
 
   const [collapsedClusters, setCollapsedClusters] = useState<string[]>([]);
   const networkRef = useRef<ForceGraphMethods>();
-  const { loading, network } = useNetwork(viewId);
+  const loading = false;
+  const network = data;
+  //const { loading, network } = useNetwork(viewId);
   const view = useInsightsView(viewId);
 
   useEffect(() => {
     if (networkRef.current) {
-      networkRef.current.d3Force('charge')?.strength(chargeStrength);
-      networkRef.current.d3Force('link')?.distance(linkDistance);
-      networkRef.current.d3Force('charge')?.distanceMax(chargeDistanceMax);
-      networkRef.current.d3Force(
-        'collide',
-        forceCollide().radius((node: IInsightsNetworkNode) => {
-          const isClusterNode = node.cluster_id === null;
-          return isClusterNode ? Math.log(node.val) * 10 : Math.log(node.val);
-        })
-      );
+      // networkRef.current.d3Force('charge')?.strength(chargeStrength);
+      // networkRef.current.d3Force('link')?.distance(linkDistance);
+      // networkRef.current.d3Force('charge')?.distanceMax(chargeDistanceMax);
+      // networkRef.current.d3Force(
+      //   'collide',
+      //   forceCollide().radius((node: IInsightsNetworkNode) => {
+      //     const isClusterNode = node.cluster_id === null;
+      //     return isClusterNode ? Math.log(node.val) * 10 : Math.log(node.val);
+      //   })
+      // );
     }
   });
 
@@ -141,7 +143,7 @@ const Network = ({
     globalScale: number
   ) => {
     if (node.x && node.y) {
-      const isClusterNode = node.cluster_id === null;
+      const isClusterNode = false;
       const label = node.name;
       const fontSize = isClusterNode
         ? 14 * (node.val / 500)
@@ -212,14 +214,14 @@ const Network = ({
     }
   };
 
-  const linkVisibility = (link: { source: Node; target: Node }) => {
-    if (
-      collapsedClusters.includes(link.source?.id) &&
-      link.target.cluster_id !== null
-    ) {
-      return false;
-    } else return true;
-  };
+  // const linkVisibility = (link: { source: Node; target: Node }) => {
+  //   if (
+  //     collapsedClusters.includes(link.source?.id) &&
+  //     link.target.cluster_id !== null
+  //   ) {
+  //     return false;
+  //   } else return true;
+  // };
 
   const onZoomEnd = ({ k }: { k: number }) => {
     setZoomLevel(k);
@@ -281,36 +283,36 @@ const Network = ({
     );
   }
 
-  if (isError(network)) {
-    return (
-      <Box
-        w="50%"
-        m="auto"
-        h="100%"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        color={colors.label}
-      >
-        <StyledMessage>
-          <FormattedMessage
-            {...messages.networkError}
-            values={{
-              link: (
-                <a
-                  href="https://citizenlabco.typeform.com/to/V2cPZ0rd"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {formatMessage(messages.networkErrorLink)}
-                </a>
-              ),
-            }}
-          />
-        </StyledMessage>
-      </Box>
-    );
-  }
+  // if (isError(network)) {
+  //   return (
+  //     <Box
+  //       w="50%"
+  //       m="auto"
+  //       h="100%"
+  //       display="flex"
+  //       justifyContent="center"
+  //       alignItems="center"
+  //       color={colors.label}
+  //     >
+  //       <StyledMessage>
+  //         <FormattedMessage
+  //           {...messages.networkError}
+  //           values={{
+  //             link: (
+  //               <a
+  //                 href="https://citizenlabco.typeform.com/to/V2cPZ0rd"
+  //                 target="_blank"
+  //                 rel="noreferrer"
+  //               >
+  //                 {formatMessage(messages.networkErrorLink)}
+  //               </a>
+  //             ),
+  //           }}
+  //         />
+  //       </StyledMessage>
+  //     </Box>
+  //   );
+  // }
 
   return (
     <Box ref={containerRef} h="100%" position="relative" overflow="hidden">
@@ -328,7 +330,7 @@ const Network = ({
           nodeCanvasObject={nodeCanvasObject}
           enableNodeDrag={false}
           nodeVisibility={nodeVisibility}
-          linkVisibility={linkVisibility}
+          // linkVisibility={() => true}
           onZoomEnd={onZoomEnd}
           nodeColor={nodeColor}
         />
