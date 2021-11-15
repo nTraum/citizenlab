@@ -28,6 +28,8 @@ module NLP
               json_community['relative_size']
             )
           end
+
+          network.remove_orphan_nodes
         end
       end
 
@@ -93,7 +95,7 @@ module NLP
 
       keep = communities.sort_by(&:importance_score).reverse.take(n).map(&:id).to_set
       @communities, removed = communities.partition { |c| keep.include?(c.id) }
-      remove_nodes(removed.flat_map(&:children), update_communities: false)
+      remove_nodes(removed.flat_map(&:children_ids), update_communities: false)
 
       removed
     end
@@ -101,7 +103,7 @@ module NLP
     # @param [Integer] n maximum number of child nodes per community
     def shrink_communities(n)
       removed_nodes = communities.flat_map {|c| c.shrink(n) }
-      remove_nodes(removed_nodes, update_communities: false)
+      remove_nodes(removed_nodes.map(&:id), update_communities: false)
       self
     end
 
@@ -139,10 +141,16 @@ module NLP
       links << Link.new(from_node, to_node, weight)
     end
 
+    def remove_orphan_nodes
+      require 'pry' ; binding.pry
+      orphans = @nodes.keys - communities.flat_map(&:children_ids)
+      remove_nodes(orphans, update_communities: false)
+    end
+
     private
 
-    def remove_nodes(nodes, update_links: true, update_communities: true)
-      @nodes.except!(*nodes.map(&:id))
+    def remove_nodes(node_ids, update_links: true, update_communities: true)
+      @nodes.except!(*node_ids)
       send(:update_links) if update_links
       send(:update_communities) if update_communities
     end
