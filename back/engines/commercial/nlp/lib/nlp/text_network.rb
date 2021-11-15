@@ -142,7 +142,6 @@ module NLP
     end
 
     def remove_orphan_nodes
-      require 'pry' ; binding.pry
       orphans = @nodes.keys - communities.flat_map(&:children_ids)
       remove_nodes(orphans, update_communities: false)
     end
