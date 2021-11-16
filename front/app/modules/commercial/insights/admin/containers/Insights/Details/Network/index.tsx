@@ -16,7 +16,7 @@ import ForceGraph2D, {
 
 // hooks
 import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
-//import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
+import useNetwork from 'modules/commercial/insights/hooks/useInsightsNetwork';
 
 // types
 import { IInsightsNetworkNode } from 'modules/commercial/insights/services/insightsNetwork';
@@ -41,18 +41,18 @@ import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks
 import { injectIntl } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
-import { data } from './network';
+// import { data } from './network';
 // styles
 // import styled from 'styled-components';
 
-type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
+// type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
 type Node = NodeObject & IInsightsNetworkNode;
 
 const zoomStep = 0.2;
 // const chargeStrength = -25;
 // const chargeDistanceMax = 80;
 // const linkDistance = 50;
-const visibleKeywordLabelScale = 3.5;
+// const visibleKeywordLabelScale = 3.5;
 
 const nodeColors = [
   colors.clGreen,
@@ -81,17 +81,20 @@ const Network = ({
   const [width, setWidth] = useState(0);
   const [zoomLevel, setZoomLevel] = useState(0);
 
-  const [collapsedClusters, setCollapsedClusters] = useState<string[]>([]);
+  // const [collapsedClusters, setCollapsedClusters] = useState<string[]>([]);
   const networkRef = useRef<ForceGraphMethods>();
-  const loading = false;
-  const network = data;
-  //const { loading, network } = useNetwork(viewId);
+  const { loading, network } = useNetwork(viewId);
   const view = useInsightsView(viewId);
 
   useEffect(() => {
     if (networkRef.current) {
-      // networkRef.current.d3Force('charge')?.strength(chargeStrength);
-      // networkRef.current.d3Force('link')?.distance(linkDistance);
+      //  networkRef.current.d3Force('charge')?.strength(chargeStrength);
+      //   networkRef.current.d3Force('link')?.strength()
+      networkRef.current.d3Force('link')?.distance((link) => {
+        console.log(link);
+        console.log(400 / link.weight);
+        return 400 / link.weight;
+      });
       // networkRef.current.d3Force('charge')?.distanceMax(chargeDistanceMax);
       // networkRef.current.d3Force(
       //   'collide',
@@ -103,22 +106,25 @@ const Network = ({
     }
   });
 
-  const clusterIds = useMemo(() => {
-    if (!isNilOrError(network)) {
-      return network.data.attributes.nodes
-        .filter((node) => node.cluster_id === null)
-        .map((node) => node.id);
-    } else return [];
-  }, [network]);
+  // const clusterIds = useMemo(() => {
+  //   if (!isNilOrError(network)) {
+  //     return network.data.attributes.nodes
+  //       .filter((node) => node.cluster_id === null)
+  //       .map((node) => node.id);
+  //   } else return [];
+  // }, [network]);
 
-  useEffect(() => {
-    setCollapsedClusters(clusterIds);
-    setInitialRender(true);
-  }, [clusterIds]);
+  // useEffect(() => {
+  // //  setCollapsedClusters(clusterIds);
+  //   setInitialRender(true);
+  // }, [clusterIds]);
 
   const networkAttributes = useMemo(() => {
     if (!isNilOrError(network)) {
-      return cloneDeep(network.data.attributes);
+      const links = network.data.attributes.links.filter(
+        (link) => link.weight > 8
+      );
+      return cloneDeep({ links, nodes: network.data.attributes.nodes });
     } else return { nodes: [], links: [] };
   }, [network]);
 
@@ -136,53 +142,53 @@ const Network = ({
     setInitialRender(false);
   };
 
-  const nodeCanvasObjectMode = () => 'after' as CanvasCustomRenderMode;
-  const nodeCanvasObject = (
-    node: Node,
-    ctx: CanvasRenderingContext2D,
-    globalScale: number
-  ) => {
-    if (node.x && node.y) {
-      const isClusterNode = false;
-      const label = node.name;
-      const fontSize = isClusterNode
-        ? 14 * (node.val / 500)
-        : 14 / (globalScale * 1.2);
-      ctx.font = `${fontSize}px Sans-Serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      ctx.fillStyle = isClusterNode ? '#fff' : '#000';
+  // const nodeCanvasObjectMode = () => 'after' as CanvasCustomRenderMode;
+  // const nodeCanvasObject = (
+  //   node: Node,
+  //   ctx: CanvasRenderingContext2D,
+  //   globalScale: number
+  // ) => {
+  //   if (node.x && node.y) {
+  //     const isClusterNode = false;
+  //     const label = node.name;
+  //     const fontSize = isClusterNode
+  //       ? 14 * (node.val / 500)
+  //       : 14 / (globalScale * 1.2);
+  //     ctx.font = `${fontSize}px Sans-Serif`;
+  //     ctx.textAlign = 'center';
+  //     ctx.textBaseline = 'middle';
+  //     ctx.fillStyle = isClusterNode ? '#fff' : '#000';
 
-      if (isClusterNode) {
-        const lineHeight = fontSize * 1.2;
-        const lines = label.split(',');
-        const x = node.x;
-        let y = node.y - lineHeight;
-        for (let i = 0; i < lines.length; i = i + 1) {
-          ctx.fillText(lines[i], x, y);
-          y += lineHeight;
-        }
-      } else if (globalScale >= visibleKeywordLabelScale) {
-        ctx.fillText(label, node.x, node.y - node.val - 4);
-      }
-    }
-  };
+  //     if (isClusterNode) {
+  //       const lineHeight = fontSize * 1.2;
+  //       const lines = label.split(',');
+  //       const x = node.x;
+  //       let y = node.y - lineHeight;
+  //       for (let i = 0; i < lines.length; i = i + 1) {
+  //         ctx.fillText(lines[i], x, y);
+  //         y += lineHeight;
+  //       }
+  //     } else if (globalScale >= visibleKeywordLabelScale) {
+  //       ctx.fillText(label, node.x, node.y - node.val - 4);
+  //     }
+  //   }
+  // };
 
-  const nodeVisibility = (node: Node) => {
-    if (node.cluster_id && collapsedClusters.includes(node.cluster_id)) {
-      return false;
-    } else return true;
-  };
+  // const nodeVisibility = (node: Node) => {
+  //   if (node.cluster_id && collapsedClusters.includes(node.cluster_id)) {
+  //     return false;
+  //   } else return true;
+  // };
 
-  const toggleCluster = (node: Node) => {
-    if (collapsedClusters.includes(node.id)) {
-      setCollapsedClusters(collapsedClusters.filter((id) => id !== node.id));
-      networkRef.current?.zoom(visibleKeywordLabelScale, 400);
-      networkRef.current?.centerAt(node.x, node.y, 400);
-    } else {
-      setCollapsedClusters([...collapsedClusters, node.id]);
-    }
-  };
+  // const toggleCluster = (node: Node) => {
+  //   if (collapsedClusters.includes(node.id)) {
+  //     setCollapsedClusters(collapsedClusters.filter((id) => id !== node.id));
+  //     networkRef.current?.zoom(visibleKeywordLabelScale, 400);
+  //     networkRef.current?.centerAt(node.x, node.y, 400);
+  //   } else {
+  //     setCollapsedClusters([...collapsedClusters, node.id]);
+  //   }
+  // };
 
   const handleNodeClick = (node: Node) => {
     const isClusterNode = node.cluster_id === null;
@@ -192,7 +198,7 @@ const Network = ({
         : query.keywords;
 
     if (isClusterNode) {
-      toggleCluster(node);
+      //  toggleCluster(node);
       trackEventByName(tracks.clickOnCluster, { clusterName: node.name });
     } else {
       clHistory.replace({
@@ -320,19 +326,20 @@ const Network = ({
         <ForceGraph2D
           height={height}
           width={width}
-          cooldownTicks={50}
-          nodeRelSize={2}
+          // cooldownTicks={50}
+          // nodeRelSize={2}
           ref={networkRef}
           onNodeClick={handleNodeClick}
           graphData={networkAttributes}
           onEngineStop={handleEngineStop}
-          nodeCanvasObjectMode={nodeCanvasObjectMode}
-          nodeCanvasObject={nodeCanvasObject}
-          enableNodeDrag={false}
-          nodeVisibility={nodeVisibility}
+          // nodeCanvasObjectMode={nodeCanvasObjectMode}
+          // nodeCanvasObject={nodeCanvasObject}
+          enableNodeDrag={true}
+          //  nodeVisibility={nodeVisibility}
           // linkVisibility={() => true}
           onZoomEnd={onZoomEnd}
           nodeColor={nodeColor}
+          linkLabel="weight"
         />
       )}
       <Box

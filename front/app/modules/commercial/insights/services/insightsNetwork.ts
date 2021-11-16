@@ -18,6 +18,7 @@ export interface IInsightsNetworkNode {
 }
 
 export interface IInsightsNetworkLink {
+  weight: number;
   target: string;
   source: string;
 }
