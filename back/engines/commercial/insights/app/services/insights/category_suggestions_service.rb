@@ -45,6 +45,13 @@ module Insights
       @nlp_client = nlp_client || NLP::Api.new
     end
 
+    # @param [Idea::ActiveRecord_Relation] inputs
+    def classify_in_batches(inputs, categories, batch_size: 250)
+      inputs.find_in_batches(batch_size: batch_size) do |input_batch|
+        classify(input_batch, categories)
+      end
+    end
+
     # @return[Array<Insights::ZeroshotClassificationTask>]
     def classify(inputs, categories)
       documents = documents_from(inputs)
