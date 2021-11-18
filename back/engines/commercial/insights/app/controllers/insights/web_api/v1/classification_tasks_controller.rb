@@ -12,12 +12,12 @@ module Insights
             categories || view.categories, # use all the categories if the query parameter is not provided
             inputs: inputs
           ).execute
-          
+
           render json: ZeroshotClassificationTaskSerializer.new(tasks, params: fastjson_params), status: :ok
         end
 
         def create
-          Insights::CreateClassificationTasksJob.perform_now(
+          Insights::CreateClassificationTasksJob.set(priority: 10).perform_later(
             inputs: inputs,
             categories: categories,
             view: view
