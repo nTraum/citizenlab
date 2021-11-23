@@ -14,8 +14,8 @@
 
       token = reset_password_service.generate_reset_password_token(@user)
       @user.update!(reset_password_token: token)
-      reset_password_service.send_email_later(@user, token)
       reset_password_service.log_password_reset_activity(@user, token)
+      reset_password_service.send_email_later(@user, token)
       head :accepted
     end
 

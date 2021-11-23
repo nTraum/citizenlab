@@ -49,5 +49,9 @@ module EmailCampaigns
         }
       }]
     end
+
+    def only_manual_send activity: nil, time: nil
+      !activity && !time
+    end
   end
 end
