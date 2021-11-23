@@ -27,13 +27,12 @@
 module EmailCampaigns
   class Campaigns::PasswordReset < Campaign
     include Trackable
-    include ActivityTriggerable
 
     recipient_filter :filter_recipient
 
-    def activity_triggers
-      {'User' => {'requested_password_reset' => true}}
-    end
+    # If this would be missing, the campaign would be sent on every event and
+    # every schedule trigger
+    before_send :only_manual_send
 
     def filter_recipient users_scope, activity:, time: nil
       users_scope.where(id: activity.item.id)
@@ -43,7 +42,7 @@ module EmailCampaigns
       PasswordResetMailer
     end
 
-    def generate_commands recipient:, activity: 
+    def generate_commands recipient:, activity:
       [{
         event_payload: {
           password_reset_url: Frontend::UrlService.new.reset_password_url(activity.payload['token'], locale: recipient.locale)

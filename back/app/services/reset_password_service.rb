@@ -20,15 +20,25 @@ class ResetPasswordService
     end
   end
 
-  def secret
-    Rails.application.secrets.secret_key_base
+  def send_email_later(user, token)
+    campaign = EmailCampaigns::Campaign.find_by!(type: "EmailCampaigns::Campaigns::PasswordReset")
+
+    delivery_service = EmailCampaigns::DeliveryService.new
+    # How does the recipient and token come into the mix?
+    delivery_service.send_now(campaign)
   end
 
-  def log_password_reset_to_segment user, token
-    LogActivityJob.set(wait: 2.seconds).perform_later(
+  def log_password_reset_activity(user, token)
+    LogActivityJob.perform_later(
       user, 'requested_password_reset', user, Time.now.to_i,
       payload: {token: token}
-      )
+    )
+  end
+
+  private
+
+  def secret
+    Rails.application.secrets.secret_key_base
   end
 
 end

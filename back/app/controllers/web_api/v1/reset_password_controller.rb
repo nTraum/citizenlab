@@ -7,12 +7,15 @@
       @user = User.not_invited.find_by_cimail params[:user][:email]
       if !@user
         # throw active record not found error
-        User.not_invited.find_by! email: params[:user][:email].downcase 
+        User.not_invited.find_by! email: params[:user][:email].downcase
       end
-      
-      token = ResetPasswordService.new.generate_reset_password_token @user
+
+      reset_password_service = ResetPasswordService.new
+
+      token = reset_password_service.generate_reset_password_token(@user)
       @user.update!(reset_password_token: token)
-      ResetPasswordService.new.log_password_reset_to_segment(@user, token)
+      reset_password_service.send_email_later(@user, token)
+      reset_password_service.log_password_reset_activity(@user, token)
       head :accepted
     end
 
@@ -22,7 +25,7 @@
       if @user && ResetPasswordService.new.token_valid?(@user, reset_password_params[:token])
         if @user.update(password: reset_password_params[:password], reset_password_token: nil)
           render json: WebApi::V1::UserSerializer.new(
-            @user, 
+            @user,
             params: fastjson_params
             ).serialized_json
         else
@@ -34,7 +37,7 @@
     end
 
 
-    private 
+    private
 
     def reset_password_params
       params.require(:user).permit(:token, :password)
