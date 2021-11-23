@@ -1,7 +1,6 @@
 require 'jwt'
 
 class ResetPasswordService
-
   def generate_reset_password_token user
     payload = {
       id: user.id,
@@ -24,12 +23,11 @@ class ResetPasswordService
     campaign = EmailCampaigns::Campaign.find_by!(type: "EmailCampaigns::Campaigns::PasswordReset")
 
     delivery_service = EmailCampaigns::DeliveryService.new
-    # How does the recipient and token come into the mix?
     delivery_service.send_now(campaign)
   end
 
   def log_password_reset_activity(user, token)
-    LogActivityJob.perform_later(
+    LogActivityJob.perform_now(
       user, 'requested_password_reset', user, Time.now.to_i,
       payload: {token: token}
     )
@@ -40,5 +38,4 @@ class ResetPasswordService
   def secret
     Rails.application.secrets.secret_key_base
   end
-
 end
