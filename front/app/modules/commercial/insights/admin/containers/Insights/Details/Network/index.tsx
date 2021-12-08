@@ -30,15 +30,19 @@ import { stringify } from 'qs';
 import { saveAs } from 'file-saver';
 
 // components
-import { Box, Spinner } from 'cl2-component-library';
+import { Box, Spinner, IconTooltip } from 'cl2-component-library';
 import Button from 'components/UI/Button';
+import {
+  TooltipContent,
+  SectionTitle,
+} from 'modules/commercial/insights/admin/components/StyledTextComponents';
 
 // tracking
 import { trackEventByName } from 'utils/analytics';
 import tracks from 'modules/commercial/insights/admin/containers/Insights/tracks';
 
 // intl
-import { injectIntl } from 'utils/cl-intl';
+import { injectIntl, FormattedMessage } from 'utils/cl-intl';
 import { InjectedIntlProps } from 'react-intl';
 import messages from '../../messages';
 // import { data } from './network';
@@ -91,8 +95,6 @@ const Network = ({
       //  networkRef.current.d3Force('charge')?.strength(chargeStrength);
       //   networkRef.current.d3Force('link')?.strength()
       networkRef.current.d3Force('link')?.distance((link) => {
-        console.log(link);
-        console.log(400 / link.weight);
         return 400 / link.weight;
       });
       // networkRef.current.d3Force('charge')?.distanceMax(chargeDistanceMax);
@@ -122,7 +124,7 @@ const Network = ({
   const networkAttributes = useMemo(() => {
     if (!isNilOrError(network)) {
       const links = network.data.attributes.links.filter(
-        (link) => link.weight > 8
+        (link) => link.weight > 3
       );
       return cloneDeep({ links, nodes: network.data.attributes.nodes });
     } else return { nodes: [], links: [] };
@@ -306,7 +308,7 @@ const Network = ({
   //           values={{
   //             link: (
   //               <a
-  //                 href="https://citizenlabco.typeform.com/to/V2cPZ0rd"
+  //                 href={formatMessage(messages.networkErrorLinkUrl)}
   //                 target="_blank"
   //                 rel="noreferrer"
   //               >
@@ -322,6 +324,34 @@ const Network = ({
 
   return (
     <Box ref={containerRef} h="100%" position="relative" overflow="hidden">
+      <Box mt="24px" ml="24px" position="absolute" zIndex="1000">
+        <SectionTitle>
+          {formatMessage(messages.networkTitle)}
+          <IconTooltip
+            ml="8px"
+            content={
+              <TooltipContent>
+                <FormattedMessage
+                  {...messages.networkTitleTooltip}
+                  values={{
+                    link: (
+                      <a
+                        href={formatMessage(
+                          messages.networkTitleTooltipLinkUrl
+                        )}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {formatMessage(messages.networkTitleTooltipLink)}
+                      </a>
+                    ),
+                  }}
+                />
+              </TooltipContent>
+            }
+          />
+        </SectionTitle>
+      </Box>
       {height && width && (
         <ForceGraph2D
           height={height}
