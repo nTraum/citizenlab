@@ -83,6 +83,7 @@ const Network = ({
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
   const [zoomLevel, setZoomLevel] = useState(0);
+  const [hoveredNode, setHoveredNode] = useState<Node | null>(null);
 
   const networkRef = useRef<ForceGraphMethods>();
   const { loading, network } = useNetwork(viewId);
@@ -311,6 +312,20 @@ const Network = ({
           onZoomEnd={onZoomEnd}
           nodeColor={nodeColor}
           enableNodeDrag={false}
+          linkColor={(link) => {
+            if (
+              hoveredNode &&
+              typeof link?.source === 'object' &&
+              typeof link?.target === 'object' &&
+              (link?.source?.id === hoveredNode.id ||
+                link?.target?.id === hoveredNode.id)
+            ) {
+              return nodeColors[hoveredNode.color_index % nodeColors.length];
+            } else return '#d3d3d3';
+          }}
+          onNodeHover={(node: Node) => {
+            setHoveredNode(node);
+          }}
         />
       )}
       <Box
