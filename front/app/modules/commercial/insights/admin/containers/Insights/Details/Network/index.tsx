@@ -12,6 +12,7 @@ import ForceGraph2D, {
   ForceGraphMethods,
   NodeObject,
 } from 'react-force-graph-2d';
+import { forceCollide } from 'd3-force';
 
 // hooks
 import useInsightsView from 'modules/commercial/insights/hooks/useInsightsView';
@@ -51,9 +52,9 @@ type CanvasCustomRenderMode = 'replace' | 'before' | 'after';
 type Node = NodeObject & IInsightsNetworkNode;
 
 const zoomStep = 0.2;
-const chargeStrength = -30;
-const chargeDistanceMax = 100;
-const linkDistance = 70;
+const chargeStrength = -10;
+const chargeDistanceMax = 5;
+const linkDistance = 75;
 const visibleKeywordLabelScale = 2;
 
 const nodeColors = [
@@ -92,11 +93,17 @@ const Network = ({
       networkRef.current.d3Force('charge')?.strength(chargeStrength);
       networkRef.current.d3Force('link')?.distance((link) => {
         if (link.target.color_index === link.source.color_index) {
-          return 0;
+          return 1;
         }
         return linkDistance;
       });
       networkRef.current.d3Force('charge')?.distanceMax(chargeDistanceMax);
+      networkRef.current.d3Force(
+        'collide',
+        forceCollide().radius(() => {
+          return 6;
+        })
+      );
     }
   });
 
@@ -139,7 +146,7 @@ const Network = ({
       ctx.fillStyle = nodeColors[node.color_index % nodeColors.length];
 
       if (globalScale >= visibleKeywordLabelScale) {
-        ctx.fillText(label, node.x, node.y - node.val / 3 - 3);
+        ctx.fillText(label, node.x, node.y - node.val / 3 - 2);
       }
     }
   };
