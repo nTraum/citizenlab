@@ -310,7 +310,7 @@ const Network = ({
           nodeCanvasObject={nodeCanvasObject}
           onZoomEnd={onZoomEnd}
           nodeColor={nodeColor}
-          linkLabel="weight"
+          enableNodeDrag={false}
         />
       )}
       <Box
