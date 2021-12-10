@@ -32,15 +32,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.tabCustomize',
     defaultMessage: 'Customize',
   },
-  subtitleHomepageStyle: {
-    id: 'app.containers.AdminPage.SettingsPage.subtitleHomepageStyle',
-    defaultMessage:
-      'Add your logo, set the platform colors, customize the homepage banner and text, and add your own content to the customizable section at the bottom of the homepage.',
-  },
-  titleHomepageStyle: {
-    id: 'app.containers.AdminPage.SettingsPage.titleHomepageStyle',
-    defaultMessage: 'Homepage and style',
-  },
   tabPages: {
     id: 'app.containers.AdminPage.SettingsPage.tabPages',
     defaultMessage: 'Pages',
@@ -65,43 +56,6 @@ export default defineMessages({
     id: 'app.containers.AdminPage.SettingsPage.languagesTooltip',
     defaultMessage:
       'Select the languages in which your platform is made available to users. They can easily choose their preferred language from this list via a button in the navbar.',
-  },
-  color_primary: {
-    id: 'app.containers.AdminPage.SettingsPage.color_primary',
-    defaultMessage: 'Primary color',
-  },
-  color_secondary: {
-    id: 'app.containers.AdminPage.SettingsPage.color_secondary',
-    defaultMessage: 'Secondary color',
-  },
-  color_text: {
-    id: 'app.containers.AdminPage.SettingsPage.color_text',
-    defaultMessage: 'Text color',
-  },
-  imageOverlayColor: {
-    id: 'app.containers.AdminPage.SettingsPage.imageOverlayColor',
-    defaultMessage: 'Image overlay color',
-  },
-  imageOverlayOpacity: {
-    id: 'app.containers.AdminPage.SettingsPage.imageOverlayOpacity',
-    defaultMessage: 'Image overlay opacity',
-  },
-  logo: {
-    id: 'app.containers.AdminPage.SettingsPage.logo',
-    defaultMessage: 'Logo',
-  },
-  header: {
-    id: 'app.containers.AdminPage.SettingsPage.header',
-    defaultMessage: 'Homepage header',
-  },
-  header_bg: {
-    id: 'app.containers.AdminPage.SettingsPage.header_bg',
-    defaultMessage: 'Header image',
-  },
-  header_bgTooltip: {
-    id: 'app.containers.AdminPage.SettingsPage.header_bgTooltip',
-    defaultMessage:
-      'Shown on the home page. Recommended dimensions are 1440x480.',
   },
   titleBasic: {
     id: 'app.containers.AdminPage.SettingsPage.titleBasic',
@@ -138,7 +92,8 @@ export default defineMessages({
     defaultMessage: 'Display avatars',
   },
   bannerDisplayHeaderAvatarsSubtitle: {
-    id: 'app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle',
+    id:
+      'app.containers.AdminPage.SettingsPage.bannerDisplayHeaderAvatarsSubtitle',
     defaultMessage:
       'Show profile pictures of participants and number of them to non-registered visitors',
   },
@@ -209,7 +164,8 @@ export default defineMessages({
     defaultMessage: 'Content',
   },
   homePageCustomizableSectionTooltip: {
-    id: 'app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip',
+    id:
+      'app.components.AdminPage.SettingsPage.homePageCustomizableSectionTooltip',
     defaultMessage:
       'This empty section at the bottom of the homepage can be customized with your own images, text and links.',
   },
@@ -265,7 +221,8 @@ export default defineMessages({
     defaultMessage: 'Profanity blocker',
   },
   profanityBlockerSettingDescription: {
-    id: 'app.containers.AdminPage.SettingsPage.profanityBlockerSettingDescription',
+    id:
+      'app.containers.AdminPage.SettingsPage.profanityBlockerSettingDescription',
     defaultMessage:
       'Block input, proposals and comments containing the most commonly reported offensive words',
   },

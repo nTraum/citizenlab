@@ -38,12 +38,13 @@ const ItemsNotInFolder = ({ projectFolderId }: Props) => {
     return null;
   }
 
-  const addProjectToFolder =
-    (projectFolderId: string) => (projectId: string) => async () => {
-      setProcessing([...processing, projectId]);
-      await updateProjectFolderMembership(projectId, projectFolderId);
-      setProcessing(processing.filter((item) => projectId !== item));
-    };
+  const addProjectToFolder = (projectFolderId: string) => (
+    projectId: string
+  ) => async () => {
+    setProcessing([...processing, projectId]);
+    await updateProjectFolderMembership(projectId, projectFolderId);
+    setProcessing(processing.filter((item) => projectId !== item));
+  };
 
   const adminPublicationsThatCanBeAdded = !isNilOrError(adminPublications)
     ? adminPublications.filter(
@@ -61,13 +62,8 @@ const ItemsNotInFolder = ({ projectFolderId }: Props) => {
     return (
       <List>
         <>
-          {adminPublicationsThatCanBeAdded
-            .filter(
-              (item) =>
-                item.publicationType === 'project' &&
-                item.attributes.depth === 0
-            )
-            .map((adminPublication, index: number) => (
+          {adminPublicationsThatCanBeAdded.map(
+            (adminPublication, index: number) => (
               <Row
                 id={adminPublication.id}
                 isLastItem={
@@ -91,7 +87,8 @@ const ItemsNotInFolder = ({ projectFolderId }: Props) => {
                   ]}
                 />
               </Row>
-            ))}
+            )
+          )}
         </>
       </List>
     );
