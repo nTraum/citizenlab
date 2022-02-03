@@ -6,9 +6,16 @@ import SharingButtonComponent from '../../Buttons/SharingButtonComponent';
 import { isNilOrError } from 'utils/helperUtils';
 import useIdea from 'hooks/useIdea';
 
+import IdeaCTAButton from '../../Buttons/IdeaCTAButton';
+//import messages from '../../messages';
+
 const Container = styled.div``;
 
 const StyledGoToCommentsButton = styled(GoToCommentsButton)`
+  margin-bottom: 10px;
+`;
+
+const StyledIdeaSharingButton = styled(IdeaSharingButton)`
   margin-bottom: 10px;
 `;
 
@@ -28,9 +35,13 @@ const IdeaCTAButtons = ({ ideaId, className }: Props) => {
     return (
       <Container className={className || ''}>
         {commentingEnabled && <StyledGoToCommentsButton />}
-        <IdeaSharingButton
+        <StyledIdeaSharingButton
           ideaId={ideaId}
           buttonComponent={<SharingButtonComponent />}
+        />
+        <IdeaCTAButton
+          buttonText={'yo'} // formatMessage(messages.commentCTA)
+          iconName="eye"
         />
       </Container>
     );
