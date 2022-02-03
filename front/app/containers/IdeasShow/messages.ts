@@ -209,4 +209,8 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.follow',
     defaultMessage: 'Follow',
   },
+  unfollow: {
+    id: 'app.containers.IdeasShow.unfollow',
+    defaultMessage: 'Unfollow',
+  },
 });

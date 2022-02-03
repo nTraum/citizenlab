@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState } from 'react';
 import IdeaCTAButton from './IdeaCTAButton';
 
 // i18n
@@ -7,20 +8,26 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 interface Props {
-  onClick?: () => void;
+  onClick?: () => {};
   ariaExpanded?: boolean;
 }
 
 const IdeaFollowButtonComponent = ({
   intl: { formatMessage },
-  onClick,
+  // onClick,
   ariaExpanded,
 }: Props & InjectedIntlProps) => {
+  const [buttonState, setButtonState] = useState(true);
+  const toggleState = () => {
+    setButtonState(!buttonState);
+  };
   return (
     <IdeaCTAButton
       iconName="eye"
-      buttonText={formatMessage(messages.follow)}
-      onClick={onClick}
+      buttonText={formatMessage(
+        buttonState == true ? messages.follow : messages.unfollow
+      )}
+      onClick={toggleState}
       ariaExpanded={ariaExpanded}
     />
   );
