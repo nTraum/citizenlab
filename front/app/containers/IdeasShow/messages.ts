@@ -205,4 +205,8 @@ export default defineMessages({
     id: 'app.containers.IdeasShow.commentCTA',
     defaultMessage: 'Add a comment',
   },
+  follow: {
+    id: 'app.containers.IdeasShow.follow',
+    defaultMessage: 'Follow',
+  },
 });

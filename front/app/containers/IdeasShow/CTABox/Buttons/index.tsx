@@ -3,11 +3,9 @@ import styled from 'styled-components';
 import GoToCommentsButton from '../../Buttons/GoToCommentsButton';
 import IdeaSharingButton from '../../Buttons/IdeaSharingButton';
 import SharingButtonComponent from '../../Buttons/SharingButtonComponent';
+import IdeaFollowButtonComponent from '../../Buttons/IdeaFollowButtonComponent';
 import { isNilOrError } from 'utils/helperUtils';
 import useIdea from 'hooks/useIdea';
-
-import IdeaCTAButton from '../../Buttons/IdeaCTAButton';
-//import messages from '../../messages';
 
 const Container = styled.div``;
 
@@ -39,10 +37,7 @@ const IdeaCTAButtons = ({ ideaId, className }: Props) => {
           ideaId={ideaId}
           buttonComponent={<SharingButtonComponent />}
         />
-        <IdeaCTAButton
-          buttonText={'yo'} // formatMessage(messages.commentCTA)
-          iconName="eye"
-        />
+        <IdeaFollowButtonComponent />
       </Container>
     );
   }
