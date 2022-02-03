@@ -151,6 +151,22 @@ const UserNavbar = memo<Props>((props) => {
           />
         )}
       </UserNavbarButton>
+      <UserNavbarButton
+        onMouseDown={removeFocusAfterMouseClick}
+        onClick={selectTab('followedIdeas')}
+        className={currentTab === 'followedIdeas' ? 'active' : ''}
+        role="tab"
+        aria-selected={currentTab === 'followedIdeas'}
+      >
+        <Border aria-hidden />
+        <TabIcon name="idea" ariaHidden />
+        {!isNilOrError(ideasCount) && (
+          <FormattedMessage
+            {...messages.followedIdeasWithCount}
+            values={{ ideasCount }}
+          />
+        )}
+      </UserNavbarButton>
     </UserNavbarWrapper>
   );
 });

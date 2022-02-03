@@ -89,4 +89,8 @@ export default defineMessages({
     defaultMessage:
       '{upvotesCount, plural, =0 {no upvotes} one {1 upvote} other {# upvotes}}',
   },
+  followedIdeasWithCount: {
+    id: 'app.containers.UsersShowPage.followedIdeasWithCount',
+    defaultMessage: 'Followed ideas ({ideasCount})',
+  },
 });

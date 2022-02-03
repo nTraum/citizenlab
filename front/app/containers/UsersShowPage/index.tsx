@@ -73,11 +73,17 @@ const UserIdeas = styled.div`
   justify-content: center;
 `;
 
+const UserFollowedIdeas = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
+
 interface Props {
   className?: string;
 }
 
-export type UserTab = 'ideas' | 'comments';
+export type UserTab = 'ideas' | 'comments' | 'followedIdeas';
 
 export const UsersShowPage = memo<Props & WithRouterProps & InjectedIntlProps>(
   ({ className, params, intl: { formatMessage } }) => {
@@ -134,6 +140,16 @@ export const UsersShowPage = memo<Props & WithRouterProps & InjectedIntlProps>(
               )}
 
               {currentTab === 'comments' && <UserComments userId={user.id} />}
+
+              {currentTab === 'followedIdeas' && (
+                <UserFollowedIdeas>
+                  <IdeaCards
+                    type="load-more"
+                    authorId={user.id}
+                    invisibleTitleMessage={messages.invisibleTitlePostsList}
+                  />
+                </UserFollowedIdeas>
+              )}
             </StyledContentContainer>
           </Container>
         </>
