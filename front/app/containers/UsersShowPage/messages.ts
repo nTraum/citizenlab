@@ -91,6 +91,6 @@ export default defineMessages({
   },
   followedIdeasWithCount: {
     id: 'app.containers.UsersShowPage.followedIdeasWithCount',
-    defaultMessage: 'Followed ideas ({ideasCount})',
+    defaultMessage: 'Following ({ideasCount})',
   },
 });

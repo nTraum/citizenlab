@@ -1228,7 +1228,7 @@
   "app.containers.UsersShowPage.a11y_upvotesCount": "{upvotesCount, plural, =0 {no upvotes} one {1 upvote} other {# upvotes}}",
   "app.containers.UsersShowPage.commentsWithCount": "Comments ({commentsCount})",
   "app.containers.UsersShowPage.editProfile": "Edit my profile",
-  "app.containers.UsersShowPage.followedIdeasWithCount": "Followed ideas ({ideasCount})",
+  "app.containers.UsersShowPage.followedIdeasWithCount": "Following ({ideasCount})",
   "app.containers.UsersShowPage.goBackToPreviousPage": "Go back to the previous page",
   "app.containers.UsersShowPage.invisibleTitlePostsList": "All input submitted by this participant",
   "app.containers.UsersShowPage.invisibleTitleUserComments": "All comments posted by this participant",
