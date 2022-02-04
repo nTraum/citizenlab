@@ -51,6 +51,8 @@ Rails.application.routes.draw do
         get 'by_slug/:slug', on: :collection, to: 'ideas#by_slug'
         get :as_markers, on: :collection, action: 'index_idea_markers'
         get :filter_counts, on: :collection
+        post 'follow' on: :member, 
+        post 'unfollow' on: :member, 
       end
 
       resources :initiatives,
