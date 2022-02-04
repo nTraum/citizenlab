@@ -99,6 +99,12 @@ const TabIcon = styled(Icon)`
   margin-right: 10px;
 `;
 
+const EyeIcon = styled(Icon)`
+  color: ${({ theme }) => theme.colorText};
+  height: 18px;
+  margin-right: 10px;
+`;
+
 interface InputProps {
   currentTab: UserTab;
   selectTab: (tab: UserTab) => () => void;
@@ -159,7 +165,7 @@ const UserNavbar = memo<Props>((props) => {
         aria-selected={currentTab === 'followedIdeas'}
       >
         <Border aria-hidden />
-        <TabIcon name="idea" ariaHidden />
+        <EyeIcon name="eye" ariaHidden />
         {!isNilOrError(ideasCount) && (
           <FormattedMessage
             {...messages.followedIdeasWithCount}
