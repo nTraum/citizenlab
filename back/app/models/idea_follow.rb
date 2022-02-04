@@ -1,0 +1,2 @@
+class IdeaFollow < ApplicationRecord
+end
