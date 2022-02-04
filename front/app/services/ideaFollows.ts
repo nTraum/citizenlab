@@ -1,10 +1,10 @@
-/* eslint-disable detect-deadcode */
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { uuidRegExp } from 'utils/helperUtils';
 
 // export type TVoteMode = 'up' | 'down';
 
+// ts-prune-ignore-next
 export interface IIdeaFollowData {
   id: string;
   type: 'ideaFollow';
@@ -33,11 +33,13 @@ interface ILinks {
   last: string;
 }
 
+// ts-prune-ignore-next
 export interface IIdeaFollows {
   data: IIdeaFollowData[];
   links: ILinks;
 }
 
+// ts-prune-ignore-next
 export interface IIdeaFollow {
   data: IIdeaFollowData;
 }
@@ -46,6 +48,7 @@ export interface INewFollowProperties {
   user_id?: string;
 }
 
+// ts-prune-ignore-next
 export function followStream(
   followId: string,
   streamParams: IStreamParams | null = null
@@ -56,6 +59,7 @@ export function followStream(
   });
 }
 
+// ts-prune-ignore-next
 export function followsStream(
   ideaId: string,
   streamParams: IStreamParams | null = null
@@ -66,6 +70,7 @@ export function followsStream(
   });
 }
 
+// ts-prune-ignore-next
 export async function addFollow(
   ideaId: string,
   object: INewFollowProperties,
@@ -87,6 +92,7 @@ export async function addFollow(
   return response;
 }
 
+// ts-prune-ignore-next
 export async function deleteFollow(
   _ideaId,
   followId: string,
@@ -107,4 +113,3 @@ export async function deleteFollow(
 
   return response;
 }
-/* eslint-enable detect-deadcode */
