@@ -8,7 +8,7 @@ import { InjectedIntlProps } from 'react-intl';
 import messages from '../messages';
 
 interface Props {
-  onClick?: () => {};
+  onClick?: () => void;
   ariaExpanded?: boolean;
 }
 
