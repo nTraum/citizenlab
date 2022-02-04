@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import IdeaCTAButton from './IdeaCTAButton';
+import IdeaCTAButtonToggled from './IdeaCTAButtonToggled';
 
 // i18n
 import { injectIntl } from 'utils/cl-intl';
@@ -21,16 +22,25 @@ const IdeaFollowButtonComponent = ({
   const toggleState = () => {
     setButtonState(!buttonState);
   };
-  return (
-    <IdeaCTAButton
-      iconName="eye"
-      buttonText={formatMessage(
-        buttonState == true ? messages.follow : messages.unfollow
-      )}
-      onClick={toggleState}
-      ariaExpanded={ariaExpanded}
-    />
-  );
+  if (buttonState) {
+    return (
+      <IdeaCTAButton
+        iconName="eye"
+        buttonText={formatMessage(messages.follow)}
+        onClick={toggleState}
+        ariaExpanded={ariaExpanded}
+      />
+    );
+  } else {
+    return (
+      <IdeaCTAButtonToggled
+        iconName="eye"
+        buttonText={formatMessage(messages.unfollow)}
+        onClick={toggleState}
+        ariaExpanded={ariaExpanded}
+      />
+    );
+  }
 };
 
 export default injectIntl(IdeaFollowButtonComponent);
