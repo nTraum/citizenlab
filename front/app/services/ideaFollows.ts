@@ -1,3 +1,4 @@
+/* eslint detect-deadcode: "off", curly: "error" */
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { uuidRegExp } from 'utils/helperUtils';
