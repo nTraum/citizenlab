@@ -1,4 +1,4 @@
-/* eslint detect-deadcode: "off", curly: "error" */
+/* eslint-disable detect-deadcode */
 import { API_PATH } from 'containers/App/constants';
 import streams, { IStreamParams } from 'utils/streams';
 import { uuidRegExp } from 'utils/helperUtils';
@@ -107,3 +107,4 @@ export async function deleteFollow(
 
   return response;
 }
+/* eslint-enable detect-deadcode */
