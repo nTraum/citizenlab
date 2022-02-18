@@ -11,9 +11,7 @@ FactoryBot.define do
     }}
 
     factory :area_with_polygon do
-      after(:create) do |area|
-        area.geometry_geojson << create(:geojson_polygon).polygon
-      end
+      geometry_geojson { Rails.root.join("spec/fixtures/polygon.geojson").read }
     end
   end
 end
