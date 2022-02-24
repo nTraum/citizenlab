@@ -295,7 +295,7 @@ interface Props extends InputProps, DataProps {
 
 interface State {}
 
-class SignedInHeader extends PureComponent<Props, State> {
+export class SignedInHeader extends PureComponent<Props, State> {
   handleSkip = (name: IOnboardingCampaignNames) => () => {
     trackEventByName(tracks.clickSkipButton, {
       extra: { location: 'signed-in header', context: name },

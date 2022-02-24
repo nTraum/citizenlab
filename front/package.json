@@ -50,6 +50,7 @@
   "dependencies": {
     "@apollo/client": "^3.5.6",
     "@babel/runtime": "7.x",
+    "@builder.io/react": "^1.1.48",
     "@citizenlab/cl2-component-library": "^0.9.35",
     "@jsonforms/core": "3.0.0-beta.0",
     "@jsonforms/react": "3.0.0-beta.1",

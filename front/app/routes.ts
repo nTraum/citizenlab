@@ -18,6 +18,15 @@ export default function createRoutes() {
       },
       childRoutes: [
         {
+          path: 'builder-test',
+          name: 'builder-test',
+          component: Loadable({
+            loader: () => import('containers/LandingPage'),
+            loading: LoadableLoadingCitizen,
+            delay: 500,
+          }),
+        },
+        {
           path: 'sign-in',
           name: 'signInPage',
           component: Loadable({

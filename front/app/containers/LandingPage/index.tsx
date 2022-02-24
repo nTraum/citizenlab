@@ -1,4 +1,16 @@
 import React, { lazy, Suspense } from 'react';
+import './builder-settings';
+
+import { BuilderComponent, builder } from '@builder.io/react';
+import { useEffect, useState } from 'react';
+
+builder.init('7b78e1a1ad944f6dbe06cd71d7941555');
+
+// Register our heading component for use in
+// the visual editor
+export const TestCustomComponent = () => {
+  <h1 className="my-heading">"HIII"</h1>;
+};
 
 // components
 import SignedOutHeader from './SignedOutHeader';
@@ -40,6 +52,19 @@ const Content = styled.div`
   z-index: 3;
 `;
 
+let BuilderPage = () => {
+  const [pageJson, setPage] = useState(undefined);
+
+  useEffect(() => {
+    builder.get('page', { url: '/builder-test' }).promise().then(setPage);
+  }, []);
+
+  console.log('RETURN:');
+  console.log(pageJson);
+
+  return <BuilderComponent model="builder-test" content={pageJson} />;
+};
+
 const LandingPage = () => {
   const authUser = useAuthUser();
 
@@ -57,6 +82,7 @@ const LandingPage = () => {
         <Content>
           <Suspense fallback={<LoadingBox />}>
             <MainContent />
+            <BuilderPage />
             <HomepageInfoSection />
             <Footer />
           </Suspense>
